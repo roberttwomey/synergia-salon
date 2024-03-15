@@ -1,4 +1,4 @@
-# Ask Hugh
+# Ask Johnny
 Ask Hugh is a web application that allows you to record audio, transcribe it, and then ask a question based on the transcription. The application uses the Whisper API, the ChatGPT API, and the ElevenLabs API. 
 
 ### Installation
