@@ -18,21 +18,21 @@
     <div class="container text-center mt-5">
         <div class="row">
             <div class="col-12 col-md-6 col-xl-4 mx-auto">
-                <img class="mb-3" src="/static/JohnPAllen-300x300.jpg" alt="" style="height:250px">
+                <img class="mb-3" src="/static/JohnPAllen-300x300.jpg" alt="" style="height:300px">
                 <h1 class="mb-4">Ask Johnny Dolphin</h1>
                 <form>
                     <div class="form-group d-flex justify-content-between">
-                        <button type="button" class="btn btn-danger" style="width:100%" id="record-button">Click to Record</button>
+                        <button type="button" class="btn btn-danger" style="width:100%;height:100px" id="record-button">Click to Record</button>
                         
                     </div>
                     <br>
                     <div class="form-group mb-3">
-                        <textarea id="transcription-box" class="form-control" rows="3" placeholder="Type a question or press record."></textarea>
+                        <textarea id="transcription-box" class="form-control" rows="1" placeholder=". . ."></textarea>
                     </div>
-                    <div class="form-group d-flex justify-content-between">
+                    <!-- <div class="form-group d-flex justify-content-between">
                         
                         <button type="button" class="btn btn-primary" style="width:100%" id="ask-button">Click to Ask from Text</button>
-                    </div>
+                    </div> -->
                 </form>
                 <div class="audio-player">
                     <audio id="audio-element"></audio>
@@ -48,7 +48,7 @@
             // Get references to HTML elements
             const recordButton = $('#record-button');
             const transcriptionBox = $('#transcription-box');
-            const askButton = $('#ask-button');
+            // const askButton = $('#ask-button');
             const audioElement = $('#audio-element')[0];
             const conversation = [];
 
@@ -65,36 +65,36 @@
             }).go();
 
             // Ask question and play audio when ask button is clicked
-            askButton.click(() => {
-                disableButton(recordButton);
-                disableButton(askButton);
-                askButton[0].innerHTML = "Thinking...";
-                conversation.push({role: "user", "content": transcriptionBox.val()})
-                const textData = { conversation: conversation };
-                $.ajax({
-                    type: 'POST',
-                    url: '/ask',
-                    data: JSON.stringify(textData),
-                    contentType: 'application/json',
-                    success: (data) => {
-                        const fileURL = data.audio;
-                        $("#response-text")[0].innerHTML = "";
-                        conversation.push({role: "assistant", "content": data.text})
-                        new TypeIt("#response-text", {
-                          strings: data.text,
-                          speed: 39,
-                          waitUntilVisible: false,
-                          cursorChar: "▊",
-                        }).go();
-                        audioElement.src = fileURL;
-                        audioElement.controls = true;
-                        audioElement.play();
-                        enableButton(recordButton);
-                        enableButton(askButton);
-                        askButton[0].innerHTML = "Click to Ask from Text";
-                    }
-                });
-            });
+            // askButton.click(() => {
+            //     disableButton(recordButton);
+            //     disableButton(askButton);
+            //     askButton[0].innerHTML = "Thinking...";
+            //     conversation.push({role: "user", "content": transcriptionBox.val()})
+            //     const textData = { conversation: conversation };
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/ask',
+            //         data: JSON.stringify(textData),
+            //         contentType: 'application/json',
+            //         success: (data) => {
+            //             const fileURL = data.audio;
+            //             $("#response-text")[0].innerHTML = "";
+            //             conversation.push({role: "assistant", "content": data.text})
+            //             new TypeIt("#response-text", {
+            //               strings: data.text,
+            //               speed: 39,
+            //               waitUntilVisible: false,
+            //               cursorChar: "▊",
+            //             }).go();
+            //             audioElement.src = fileURL;
+            //             audioElement.controls = true;
+            //             audioElement.play();
+            //             enableButton(recordButton);
+            //             enableButton(askButton);
+            //             askButton[0].innerHTML = "Click to Ask from Text";
+            //         }
+            //     });
+            // });
 
 
             // Initialize MediaRecorder
@@ -134,7 +134,7 @@
                     mediaRecorder.stop();
                     recording = false;
                 } else {
-                    recordButton[0].innerHTML = "Click to Stop Recording...";
+                    recordButton[0].innerHTML = "Click to Finish Recording...";
                     chunks = [];
                     mediaRecorder.start();
                     recording = true;
