@@ -2,7 +2,56 @@
 
 # NOTE: this example requires PyAudio because it uses the Microphone class
 
+# Import the os package
+import os
 import speech_recognition as sr
+
+import sounddevice
+import requests
+
+r = sr.Recognizer()
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+# Import the openai package
+import openai
+
+# Set openai.api_key to the OPENAI environment variable
+openai.api_key = os.environ.get('OPENAI')
+
+model_name="gpt-3.5-turbo"
+
+
+def chat_with_openai(prompt):
+    """
+    Sends the prompt to OpenAI API using the chat interface and gets the model's response.
+    """
+    message = {
+        'role': 'user',
+        'content': prompt
+    }
+
+    # response = openai.ChatCompletion.create(
+    #     model=model_name,
+    #     messages=[message]
+    # )
+
+    response = openai.ChatCompletion.create(
+      model=model_name,
+      messages=[
+            {"role": "system", "content": "You are assisting in creating a prompt for stable diffusion. It is generating over live video input. Use what the user says and translate it using important subjects in their speech to craft a well-worded prompt for stable diffusion."},
+         message
+        ]
+    )
+
+    # Extract the chatbot's message from the response.
+    # Assuming there's at least one response and taking the last one as the chatbot's reply.
+    chatbot_response = response.choices[0].message['content']
+    return chatbot_response.strip()
+
 
 # obtain audio from the microphone
 r = sr.Recognizer()
@@ -22,7 +71,7 @@ with sr.Microphone() as source:
 # try:
 #     # for testing purposes, we're just using the default API key
 #     # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-#     # instead of `r.recognize_google(audio)`
+#     # instead of `r.recognize_google(audiwordso)`
 #     print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
 # except sr.UnknownValueError:
 #     print("Google Speech Recognition could not understand audio")
@@ -90,12 +139,14 @@ try:
     
     words = r.recognize_whisper(audio, language="english")
     print("Whisper thinks you said " + words)
+    revisedPrompt = chat_with_openai(words)
+    print("New Prompt: " + revisedPrompt)
     file1 = open("prompt.txt", "w")
     
  
     # \n is placed to indicate EOL (End of Line)
     # file1.write(words + "\n")
-    file1.writelines(words)
+    file1.writelines(revisedPrompt)
     file1.close()  # to change file access modes
 
 except sr.UnknownValueError:
