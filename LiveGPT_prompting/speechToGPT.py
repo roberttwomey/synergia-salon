@@ -2,6 +2,9 @@
 import os
 import speech_recognition as sr
 
+import sounddevice
+import requests
+
 r = sr.Recognizer()
 
 from dotenv import load_dotenv
@@ -48,9 +51,17 @@ def chat_with_openai(prompt):
         'content': prompt
     }
 
+    # response = openai.ChatCompletion.create(
+    #     model=model_name,
+    #     messages=[message]
+    # )
+
     response = openai.ChatCompletion.create(
-        model=model_name,
-        messages=[message]
+      model=model_name,
+      messages=[
+            {"role": "system", "content": "You are assisting in a live theater performance. You will recieve a line from the actor, and your job is to respond by feeding them a line to say. Keep it in context with what they said and respond with a line that fits within the conversation and relates to synergy and nature. Limit your response length to 100 words or less."},
+         message
+        ]
     )
 
     # Extract the chatbot's message from the response.
