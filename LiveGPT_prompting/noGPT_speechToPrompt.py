@@ -42,7 +42,7 @@ def chat_with_openai(prompt):
     response = openai.ChatCompletion.create(
       model=model_name,
       messages=[
-            {"role": "system", "content": "[adjective] [subject] [doing action], [creative lighting style], extremely detailed, surrealism, uncanny valley, in the style of [art medium 1], [art medium 2], [art medium 3], [famous art style 1], [famous art style 2], [famous art style 3]. Using this format, "},
+            {"role": "system", "content": "You are assisting in creating a prompt for stable diffusion. It is generating over live video input. Use what the user says and translate it using important subjects in their speech to craft a well-worded prompt for stable diffusion."},
          message
         ]
     )
@@ -139,14 +139,14 @@ try:
     
     words = r.recognize_whisper(audio, language="english")
     print("Whisper thinks you said " + words)
-    revisedPrompt = chat_with_openai(words)
-    print("New Prompt: " + revisedPrompt)
+    #revisedPrompt = chat_with_openai(words)
+    print("New Prompt: " + words)
     file1 = open("prompt.txt", "w")
     
  
     # \n is placed to indicate EOL (End of Line)
     # file1.write(words + "\n")
-    file1.writelines(revisedPrompt)
+    file1.writelines(words)
     file1.close()  # to change file access modes
 
 except sr.UnknownValueError:
