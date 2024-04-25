@@ -20,7 +20,7 @@ openai.api_key = os.environ.get('OPENAI')
 
 model_name="gpt-3.5-turbo"
 
-
+sound_device = int(os.environ.get('AUDIODEVICE'))
 
 def main():
     """
@@ -30,7 +30,8 @@ def main():
 
     user_input = ""
     while user_input.lower() != "quit":
-        with sr.Microphone() as source:
+        with sr.Microphone(device_index=sound_device) as source:
+            r.adjust_for_ambient_noise(source)  # we only need to calibrate once, before we start listening
             print("Say something!")
             audio = r.listen(source)
             
