@@ -42,7 +42,7 @@ def chat_with_openai(prompt):
     response = openai.ChatCompletion.create(
       model=model_name,
       messages=[
-            {"role": "system", "content": "[adjective] [subject] [doing action], [creative lighting style], extremely detailed, surrealism, uncanny valley, in the style of [art medium 1], [art medium 2], [art medium 3], [famous art style 1], [famous art style 2], [famous art style 3]. Using this format, "},
+            {"role": "system", "content": "Use this format: adjective] [subject] [doing action], [creative lighting style], extremely detailed, surrealism, uncanny valley, in the style of [art medium], [famous art style]. Using that format, replace the bracketed words with fitting ideas and subjects from the user, making the words more illustrative and descriptive. Feel free to expand upon the ideas a bit, and fill in any that can't be found from the user input with words or descriptions that work well with the rest."},
          message
         ]
     )
@@ -141,7 +141,7 @@ try:
     print("Whisper thinks you said " + words)
     revisedPrompt = chat_with_openai(words)
     print("New Prompt: " + revisedPrompt)
-    file1 = open("prompt.txt", "w")
+    file1 = open("/home/reid/work/ComfyUI/input/prompt.txt", "w")
     
  
     # \n is placed to indicate EOL (End of Line)
