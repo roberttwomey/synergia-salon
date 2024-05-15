@@ -5,8 +5,10 @@ webcam = cv2.VideoCapture(0)
 while True:
     try:
         check, frame = webcam.read()
-        cv2.imshow("Capturing", frame)
-        cv2.imwrite(filename='capture.jpg', img=frame)
+        image = cv2.resize(frame, (800, 600))
+        #image = frame
+        cv2.imshow("Capturing", image)
+        cv2.imwrite(filename='capture.jpg', img=image)
         #print("Image saved!")
         key = cv2.waitKey(1)
         
